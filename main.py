@@ -1,11 +1,12 @@
 class Player:
-    __name = ''
-    __stocks = []
-    __dividend = 0
+
+   #initiate + instances
     def __init__(self, name:str):
         '''Creating Player; 
         name: player name(str)'''
-        self.name = name
+        self.__name = name
+        self.__stocks = []
+        self.__dividend = 0
     
     
     #-------------------------------------#        
@@ -76,18 +77,35 @@ class Player:
 
 
 class Company:
-    __name = ''
-    __price = 0
-    __availableShares = 0
-    __majorityHolder = ''
-    def __init__(self, name:str, price:int):
+    
+    #class attribute
+    _groupBlock = [] #class attribute for groupBlock
+    
+    
+    #initiate + instances
+    def __init__(self, groupName:str, name:str, price:int):
         '''Creating Company; 
+        groupName: company group (str)
         name: company name (str)
         price: company price (int)
         '''
-        self.name = name
-        self.price = price
+        self.groupName = groupName
+        self.__name = name
+        self.__price = price
+        self.__majorityHolder = ''
+        self.__availableShares = 9
         
+    #-------------------------------------#       
+    #CLASS METHOD
+    
+    #Creating group for the block (e.g. yellow, green, etc...)
+    @classmethod
+    def createGroup(cls, groupName:str):
+        cls._groupBlock.append(groupName)       
+        cls._groupBlock.append([])       
+         
+    #     
+
     #-------------------------------------#        
     #SETTER AND GETTER
     
@@ -145,6 +163,23 @@ class Company:
         else:
             self.__majorityHolder = player
     #
+    
+    
+    #Setter and getter for groupName // incomplete
+    @property
+    def groupName(self):
+        return self.__groupName
+
+    @groupName.setter
+    def groupName(self, groupName): #// incomplete
+        #check if group exist in `_groupBlock`
+        #if exist append this object to `groupName.companyList[]`
+        #else print group doesnt exist use Company(createGroup(groupName)) to create new group
+        indexOfGroupName = self._groupBlock.index(groupName) + 1
+        self._groupBlock[indexOfGroupName].append(self)
+        print(self._groupBlock)
+    #
+       
     #-------------------------------------#       
 
 
@@ -153,5 +188,11 @@ class Company:
 #-------------------------------------#        
 boots = Player("Boots")
 print(boots)
+#-------------------------------------#
+#Company Test
+Company.createGroup('Yellow')
+leicesterSquare = Company('Yellow', 'Leicester Square', 100)
+
 #-------------------------------------#        
+        
 
